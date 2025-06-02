@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Escribir texto en NFC</title>
+</head>
+<body>
+  <h2>Escribir texto en un tag NFC</h2>
+  <input type="text" id="textoNFC" placeholder="Escribe el texto aquí" />
+  <button id="btnEscribir">Escribir en tag NFC</button>
+  <p id="mensaje"></p>
+
+  <script>
+    const btn = document.getElementById('btnEscribir');
+    const mensaje = document.getElementById('mensaje');
+
+    btn.addEventListener('click', async () => {
+      if ('NDEFReader' in window) {
+        try {
+          const texto = document.getElementById('textoNFC').value;
+          if (!texto) {
+            mensaje.textContent = 'Por favor, escribe un texto.';
+            return;
+          }
+
+          const ndef = new NDEFReader();
+          await ndef.write(texto);
+          mensaje.textContent = 'Texto escrito en el tag NFC correctamente.';
+          mensaje.style.color = 'green';
+        } catch (error) {
+          mensaje.textContent = 'Error al escribir en NFC: ' + error.message;
+          mensaje.style.color = 'red';
+        }
+      } else {
+        mensaje.textContent = 'Web NFC no está soportado en este navegador.';
+        mensaje.style.color = 'red';
+      }
+    });
+  </script>
+</body>
+</html>
