@@ -26,13 +26,18 @@
       width: 100%;
       padding: 12px;
       font-size: 16px;
-      background-color: #007bff;
-      color: white;
       border: none;
       cursor: pointer;
+      color: white;
+    }
+    .preparar {
+      background-color: #007bff; /* azul */
+    }
+    .escribir {
+      background-color: #28a745; /* verde */
     }
     button:hover {
-      background-color: #0056b3;
+      opacity: 0.9;
     }
     #mensaje {
       margin-top: 20px;
@@ -44,43 +49,9 @@
 <body>
   <h2>Escribir texto en un tag NFC</h2>
   <input type="text" id="textoNFC" placeholder="Escribe el texto aquí" />
-  <button id="btnEscribir">Escribir en tag NFC</button>
+  <button id="btnEscribir" class="preparar">Preparar NFC</button>
   <p id="mensaje"></p>
 
   <script>
-    // Cargar automáticamente el texto desde la URL si viene como parámetro
     const params = new URLSearchParams(window.location.search);
-    const textoParam = params.get('texto');
-
-    if (textoParam) {
-      document.getElementById('textoNFC').value = textoParam;
-    }
-
-    const btn = document.getElementById('btnEscribir');
-    const mensaje = document.getElementById('mensaje');
-
-    btn.addEventListener('click', async () => {
-      if ('NDEFReader' in window) {
-        try {
-          const texto = document.getElementById('textoNFC').value;
-          if (!texto) {
-            mensaje.textContent = 'Por favor, escribe un texto.';
-            return;
-          }
-
-          const ndef = new NDEFReader();
-          await ndef.write(texto);
-          mensaje.textContent = 'Texto escrito en el tag NFC correctamente.';
-          mensaje.style.color = 'green';
-        } catch (error) {
-          mensaje.textContent = 'Error al escribir en NFC: ' + error.message;
-          mensaje.style.color = 'red';
-        }
-      } else {
-        mensaje.textContent = 'Web NFC no está soportado en este navegador.';
-        mensaje.style.color = 'red';
-      }
-    });
-  </script>
-</body>
-</html>
+    co
