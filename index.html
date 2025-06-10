@@ -54,4 +54,58 @@
 
   <script>
     const params = new URLSearchParams(window.location.search);
-    co
+    const textoParam = params.get('texto');
+    if (textoParam) {
+      document.getElementById('textoNFC').value = textoParam;
+    }
+
+    const btn = document.getElementById('btnEscribir');
+    const mensaje = document.getElementById('mensaje');
+    let modoPreparacion = true;
+    let ndef;
+
+    btn.addEventListener('click', async () => {
+      if ('NDEFReader' in window) {
+        if (modoPreparacion) {
+          try {
+            ndef = new NDEFReader();
+            await ndef.scan();
+            mensaje.textContent = 'Acerca el tag NFC para escribir.';
+            mensaje.style.color = 'black';
+            btn.textContent = 'Escribir al NFC';
+            btn.classList.remove('preparar');
+            btn.classList.add('escribir');
+            modoPreparacion = false;
+          } catch (error) {
+            mensaje.textContent = 'Error al preparar NFC: ' + error.message;
+            mensaje.style.color = 'red';
+          }
+        } else {
+          try {
+            const texto = document.getElementById('textoNFC').value;
+            if (!texto) {
+              mensaje.textContent = 'Por favor, escribe un texto.';
+              return;
+            }
+
+            await ndef.write(texto);
+            mensaje.textContent = 'Texto escrito en el tag NFC correctamente.';
+            mensaje.style.color = 'green';
+
+            btn.textContent = 'Preparar NFC';
+            btn.classList.remove('escribir');
+            btn.classList.add('preparar');
+            modoPreparacion = true;
+          } catch (error) {
+            mensaje.textContent = 'Error al escribir en NFC: ' + error.message;
+            mensaje.style.color = 'red';
+          }
+        }
+      } else {
+        mensaje.textContent = 'Web NFC no está soportado en este navegador.';
+        mensaje.style.color = 'red';
+      }
+    });
+  </script>
+</body>
+</html>
