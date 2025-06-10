@@ -1,4 +1,4 @@
-<!DOCTYPE html>Add commentMore actions
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
@@ -11,6 +11,14 @@
   <p id="mensaje"></p>
 
   <script>
+    // Cargar automáticamente el texto desde la URL si viene como parámetro
+    const params = new URLSearchParams(window.location.search);
+    const textoParam = params.get('texto');
+
+    if (textoParam) {
+      document.getElementById('textoNFC').value = textoParam;
+    }
+
     const btn = document.getElementById('btnEscribir');
     const mensaje = document.getElementById('mensaje');
 
